@@ -24,7 +24,7 @@ import { FixedSizeList as List } from 'react-window';
 import { createFilter } from 'react-search-input';
 import { t, styled, css } from '@superset-ui/core';
 import { Input } from 'src/components/Input';
-import { Select } from 'src/components';
+import { Select, Typography } from 'src/components';
 import Loading from 'src/components/Loading';
 import Button from 'src/components/Button';
 import Icons from 'src/components/Icons';
@@ -78,7 +78,7 @@ const KEYS_TO_SORT = {
 
 export const DEFAULT_SORT_KEY = 'changed_on';
 
-const DEFAULT_CELL_HEIGHT = 128;
+const DEFAULT_CELL_HEIGHT = 105;
 
 const Controls = styled.div`
   ${({ theme }) => `
@@ -285,8 +285,6 @@ class SliceAdder extends React.Component {
             sliceName={cellData.slice_name}
             lastModified={cellData.changed_on_humanized}
             visType={cellData.viz_type}
-            datasourceUrl={cellData.datasource_url}
-            datasourceName={cellData.datasource_name}
             thumbnailUrl={cellData.thumbnail_url}
             isSelected={isSelected}
           />
@@ -327,70 +325,8 @@ class SliceAdder extends React.Component {
           flex-direction: column;
         `}
       >
-        <NewChartButtonContainer>
-          <NewChartButton
-            buttonStyle="link"
-            buttonSize="xsmall"
-            onClick={() =>
-              window.open(
-                `/chart/add?dashboard_id=${this.props.dashboardId}`,
-                '_blank',
-                'noopener noreferrer',
-              )
-            }
-          >
-            <Icons.PlusSmall />
-            {t('Create new chart')}
-          </NewChartButton>
-        </NewChartButtonContainer>
-        <Controls>
-          <Input
-            placeholder={
-              this.state.showOnlyMyCharts
-                ? t('Filter your charts')
-                : t('Filter charts')
-            }
-            className="search-input"
-            onChange={ev => this.handleChange(ev.target.value)}
-            data-test="dashboard-charts-filter-search-input"
-          />
-          <StyledSelect
-            id="slice-adder-sortby"
-            value={this.state.sortBy}
-            onChange={this.handleSelect}
-            options={Object.entries(KEYS_TO_SORT).map(([key, label]) => ({
-              label: t('Sort by %s', label),
-              value: key,
-            }))}
-            placeholder={t('Sort by')}
-          />
-        </Controls>
-        <div
-          css={theme => css`
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
-            align-items: center;
-            gap: ${theme.gridUnit}px;
-            padding: 0 ${theme.gridUnit * 3}px ${theme.gridUnit * 4}px
-              ${theme.gridUnit * 3}px;
-          `}
-        >
-          <Checkbox
-            onChange={this.onShowOnlyMyCharts}
-            checked={this.state.showOnlyMyCharts}
-          />
-          {t('Show only my charts')}
-          <InfoTooltipWithTrigger
-            placement="top"
-            tooltip={t(
-              `You can choose to display all charts that you have access to or only the ones you own.
-              Your filter selection will be saved and remain active until you choose to change it.`,
-            )}
-          />
-        </div>
         {this.props.isLoading && <Loading />}
-        {!this.props.isLoading && this.state.filteredSlices.length > 0 && (
+        {!this.props.isLoading && this.state.filteredSlices.length > 0 ? (
           <ChartList>
             <AutoSizer>
               {({ height, width }) => (
@@ -408,6 +344,8 @@ class SliceAdder extends React.Component {
               )}
             </AutoSizer>
           </ChartList>
+        ) : (
+          <div css={css`text-align: center;`}>{t('No charts yet')}</div>
         )}
         {this.props.errorMessage && (
           <div
