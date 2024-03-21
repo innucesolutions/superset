@@ -23,11 +23,7 @@ import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList as List } from 'react-window';
 import { createFilter } from 'react-search-input';
 import { t, styled, css } from '@superset-ui/core';
-import { Input } from 'src/components/Input';
-import { Select, Typography } from 'src/components';
 import Loading from 'src/components/Loading';
-import Button from 'src/components/Button';
-import Icons from 'src/components/Icons';
 import {
   LocalStorageKeys,
   getItem,
@@ -43,8 +39,6 @@ import {
 } from 'src/dashboard/util/constants';
 import { slicePropShape } from 'src/dashboard/util/propShapes';
 import { debounce, pickBy } from 'lodash';
-import Checkbox from 'src/components/Checkbox';
-import { InfoTooltipWithTrigger } from '@superset-ui/chart-controls';
 import AddSliceCard from './AddSliceCard';
 import AddSliceDragPreview from './dnd/AddSliceDragPreview';
 import DragDroppable from './dnd/DragDroppable';
@@ -69,55 +63,10 @@ const defaultProps = {
 };
 
 const KEYS_TO_FILTERS = ['slice_name', 'viz_type', 'datasource_name'];
-const KEYS_TO_SORT = {
-  slice_name: t('name'),
-  viz_type: t('viz type'),
-  datasource_name: t('dataset'),
-  changed_on: t('recent'),
-};
 
 export const DEFAULT_SORT_KEY = 'changed_on';
 
 const DEFAULT_CELL_HEIGHT = 105;
-
-const Controls = styled.div`
-  ${({ theme }) => `
-    display: flex;
-    flex-direction: row;
-    padding:
-      ${theme.gridUnit * 4}px
-      ${theme.gridUnit * 3}px
-      ${theme.gridUnit * 4}px
-      ${theme.gridUnit * 3}px;
-  `}
-`;
-
-const StyledSelect = styled(Select)`
-  margin-left: ${({ theme }) => theme.gridUnit * 2}px;
-  min-width: 150px;
-`;
-
-const NewChartButtonContainer = styled.div`
-  ${({ theme }) => css`
-    display: flex;
-    justify-content: flex-end;
-    padding-right: ${theme.gridUnit * 2}px;
-  `}
-`;
-
-const NewChartButton = styled(Button)`
-  ${({ theme }) => css`
-    height: auto;
-    & > .anticon + span {
-      margin-left: 0;
-    }
-    & > [role='img']:first-of-type {
-      margin-right: ${theme.gridUnit}px;
-      padding-bottom: 1px;
-      line-height: 0;
-    }
-  `}
-`;
 
 export const ChartList = styled.div`
   flex-grow: 1;
@@ -345,7 +294,13 @@ class SliceAdder extends React.Component {
             </AutoSizer>
           </ChartList>
         ) : (
-          <div css={css`text-align: center;`}>{t('No charts yet')}</div>
+          <div
+            css={css`
+              text-align: center;
+            `}
+          >
+            {t('No charts yet')}
+          </div>
         )}
         {this.props.errorMessage && (
           <div
