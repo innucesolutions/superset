@@ -24,7 +24,7 @@ import { FixedSizeList as List } from 'react-window';
 import { createFilter } from 'react-search-input';
 import { t, styled, css } from '@superset-ui/core';
 import { Input } from 'src/components/Input';
-import { Select, Typography } from 'src/components';
+import { Select } from 'src/components';
 import Loading from 'src/components/Loading';
 import Button from 'src/components/Button';
 import Icons from 'src/components/Icons';
@@ -60,12 +60,14 @@ const propTypes = {
   selectedSliceIds: PropTypes.arrayOf(PropTypes.number),
   editMode: PropTypes.bool,
   dashboardId: PropTypes.number,
+  canExplore: PropTypes.bool,
 };
 
 const defaultProps = {
   selectedSliceIds: [],
   editMode: false,
   errorMessage: '',
+  canExplore: true,
 };
 
 const KEYS_TO_FILTERS = ['slice_name', 'viz_type', 'datasource_name'];
@@ -325,6 +327,75 @@ class SliceAdder extends React.Component {
           flex-direction: column;
         `}
       >
+        {this.props.canExplore && (
+          <div>
+            {/* Create new chart */}
+            <NewChartButtonContainer>
+              <NewChartButton
+                buttonStyle="link"
+                buttonSize="xsmall"
+                onClick={() =>
+                  window.open(
+                    `/chart/add?dashboard_id=${this.props.dashboardId}`,
+                    '_blank',
+                    'noopener noreferrer',
+                  )
+                }
+              >
+                <Icons.PlusSmall />
+                {t('Create new chart')}
+              </NewChartButton>
+            </NewChartButtonContainer>
+            {/* Filter */}
+            <Controls>
+              <Input
+                placeholder={
+                  this.state.showOnlyMyCharts
+                    ? t('Filter your charts')
+                    : t('Filter charts')
+                }
+                className="search-input"
+                onChange={ev => this.handleChange(ev.target.value)}
+                data-test="dashboard-charts-filter-search-input"
+              />
+              <StyledSelect
+                id="slice-adder-sortby"
+                value={this.state.sortBy}
+                onChange={this.handleSelect}
+                options={Object.entries(KEYS_TO_SORT).map(([key, label]) => ({
+                  label: t('Sort by %s', label),
+                  value: key,
+                }))}
+                placeholder={t('Sort by')}
+              />
+            </Controls>
+            {/* Show only my charts */}
+            <div
+              css={theme => css`
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+                gap: ${theme.gridUnit}px;
+                padding: 0 ${theme.gridUnit * 3}px ${theme.gridUnit * 4}px
+                  ${theme.gridUnit * 3}px;
+              `}
+            >
+              <Checkbox
+                onChange={this.onShowOnlyMyCharts}
+                checked={this.state.showOnlyMyCharts}
+              />
+              {t('Show only my charts')}
+              <InfoTooltipWithTrigger
+                placement="top"
+                tooltip={t(
+                  `You can choose to display all charts that you have access to or only the ones you own.
+                Your filter selection will be saved and remain active until you choose to change it.`,
+                )}
+              />
+            </div>
+          </div>
+        )}
         {this.props.isLoading && <Loading />}
         {!this.props.isLoading && this.state.filteredSlices.length > 0 ? (
           <ChartList>
@@ -345,7 +416,13 @@ class SliceAdder extends React.Component {
             </AutoSizer>
           </ChartList>
         ) : (
-          <div css={css`text-align: center;`}>{t('No charts yet')}</div>
+          <div
+            css={css`
+              text-align: center;
+            `}
+          >
+            {t('No charts yet')}
+          </div>
         )}
         {this.props.errorMessage && (
           <div

@@ -69,8 +69,6 @@ test('does not render the tooltip with anchors', async () => {
   render(
     <AddSliceCard
       {...mockedProps}
-      datasourceUrl="http://test.com"
-      datasourceName="datasource-name"
     />,
   );
   userEvent.hover(screen.getByRole('link', { name: 'datasource-name' }));
