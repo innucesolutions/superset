@@ -66,11 +66,7 @@ test('does not render the tooltip with anchors', async () => {
   const mock = jest
     .spyOn(React, 'useState')
     .mockImplementation(() => [true, jest.fn()]);
-  render(
-    <AddSliceCard
-      {...mockedProps}
-    />,
-  );
+  render(<AddSliceCard {...mockedProps} />);
   userEvent.hover(screen.getByRole('link', { name: 'datasource-name' }));
   expect(await screen.findByRole('tooltip')).toBeInTheDocument();
   const tooltip = await screen.findByRole('tooltip');
