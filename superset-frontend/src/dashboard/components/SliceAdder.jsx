@@ -161,7 +161,7 @@ class SliceAdder extends React.Component {
   }
 
   userIdForFetch() {
-    return this.state.showOnlyMyCharts ? this.props.userId : undefined;
+    return undefined;
   }
 
   componentDidMount() {
