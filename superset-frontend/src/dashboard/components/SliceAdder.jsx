@@ -148,7 +148,10 @@ class SliceAdder extends React.Component {
       searchTerm: '',
       sortBy: DEFAULT_SORT_KEY,
       selectedSliceIdsSet: new Set(props.selectedSliceIds),
-      showOnlyMyCharts: false,
+      showOnlyMyCharts: getItem(
+        LocalStorageKeys.dashboard__editor_show_only_my_charts,
+        true,
+      ),
     };
     this.rowRenderer = this.rowRenderer.bind(this);
     this.searchUpdated = this.searchUpdated.bind(this);
@@ -197,9 +200,10 @@ class SliceAdder extends React.Component {
   }
 
   getFilteredSortedSlices(slices, searchTerm, sortBy, showOnlyMyCharts) {
+    const doItNot = false;
     return Object.values(slices)
       .filter(slice =>
-        showOnlyMyCharts
+        showOnlyMyCharts && doItNot
           ? (slice.owners &&
               slice.owners.find(owner => owner.id === this.props.userId)) ||
             (slice.created_by && slice.created_by.id === this.props.userId)
