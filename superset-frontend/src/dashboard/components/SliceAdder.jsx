@@ -148,10 +148,7 @@ class SliceAdder extends React.Component {
       searchTerm: '',
       sortBy: DEFAULT_SORT_KEY,
       selectedSliceIdsSet: new Set(props.selectedSliceIds),
-      showOnlyMyCharts: getItem(
-        LocalStorageKeys.dashboard__editor_show_only_my_charts,
-        true,
-      ),
+      showOnlyMyCharts: false,
     };
     this.rowRenderer = this.rowRenderer.bind(this);
     this.searchUpdated = this.searchUpdated.bind(this);
