@@ -249,7 +249,7 @@ class HeaderActionsDropdown extends React.PureComponent {
               : t('Enter fullscreen')}
           </Menu.Item>
         )}
-        {editMode && (
+        {editMode && dashboardInfo.fs_role_admin && (
           <Menu.Item
             key={MENU_KEYS.EDIT_PROPERTIES}
             onClick={this.handleMenuClick}
@@ -257,7 +257,7 @@ class HeaderActionsDropdown extends React.PureComponent {
             {t('Edit properties')}
           </Menu.Item>
         )}
-        {editMode && (
+        {editMode && dashboardInfo.fs_role_admin && (
           <Menu.Item key={MENU_KEYS.EDIT_CSS}>
             <CssEditor
               triggerNode={<span>{t('Edit CSS')}</span>}
