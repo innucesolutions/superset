@@ -124,6 +124,8 @@
         "-- Hinweis: Wenn Sie Ihre Anfrage nicht speichern, bleiben diese Registerkarten NICHT bestehen, wenn Sie Ihre Cookies löschen oder den Browser wechseln.\n\n"
       ],
       ".": ["."],
+      "Don't refresh": ["Nicht nachladen"],
+      "a few seconds ago": ["Vor ein paar Sekunden"],
       "0 Selected": ["0 ausgewählt"],
       "1 calendar day frequency": ["1 Kalendertag Frequenz"],
       "1 day": ["1 Tag"],
@@ -147,6 +149,8 @@
       "1 year end frequency": ["1 Jahres-Frequenz (Jahresende)"],
       "1 year start frequency": ["1 Jahres-Frequenz (Jahresanfang)"],
       "10 minute": ["10 Minuten"],
+      "10 seconds": ["10 Sekunden"],
+      "12 hours": ["12 Stunden"],
       "104 weeks": ["104 Wochen"],
       "104 weeks ago": ["vor 104 Wochen"],
       "15 minute": ["15 Minuten"],
@@ -160,6 +164,7 @@
       "2 years": ["2 Jahre"],
       "2 years ago": ["vor 2 Jahren"],
       "2/98 percentiles": ["2/98 Perzentile"],
+      "24 hours": ["24 Stunden"],
       "28 days": ["28 Tage"],
       "28 days ago": ["vor 28 Tagen"],
       "2D": ["2D"],
@@ -184,6 +189,7 @@
         "52 Wochen, beginnend am Montag (freq=52W-MON)"
       ],
       "6 hour": ["6 Stunden"],
+      "6 hours": ["6 Stunden"],
       "60 days": ["60 Tage"],
       "7 calendar day frequency": ["7 Kalendertage Frequenz"],
       "7 days": ["7 Tage"],
