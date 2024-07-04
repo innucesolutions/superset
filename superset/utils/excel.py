@@ -16,7 +16,6 @@
 # under the License.
 import io
 from typing import Any
-
 import pandas as pd
 
 
@@ -26,6 +25,10 @@ def df_to_excel(df: pd.DataFrame, **kwargs: Any) -> Any:
     # timezones are not supported
     for column in df.select_dtypes(include=["datetimetz"]).columns:
         df[column] = df[column].astype(str)
+
+    # extract <a> tags
+    for column in df.select_dtypes(include=["object"]).columns:
+        df[column] = df[column].str.replace(r'<a[^>]*>([^<]+)</>', r'\1', regex=True)
 
     # pylint: disable=abstract-class-instantiated
     with pd.ExcelWriter(output, engine="xlsxwriter") as writer:

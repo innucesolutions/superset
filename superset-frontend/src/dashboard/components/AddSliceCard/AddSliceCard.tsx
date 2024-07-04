@@ -30,7 +30,6 @@ import { t, isFeatureEnabled, FeatureFlag, css } from '@superset-ui/core';
 import ImageLoader from 'src/components/ListViewCard/ImageLoader';
 import { usePluginContext } from 'src/components/DynamicPlugins';
 import { Tooltip } from 'src/components/Tooltip';
-import { GenericLink } from 'src/components/GenericLink/GenericLink';
 import { Theme } from '@emotion/react';
 
 const FALLBACK_THUMBNAIL_URL = '/static/assets/images/chart-card-fallback.svg';
@@ -166,8 +165,6 @@ const SliceAddedBadge: React.FC<{ placeholder?: HTMLDivElement }> = ({
 );
 
 const AddSliceCard: React.FC<{
-  datasourceUrl?: string;
-  datasourceName?: string;
   innerRef?: React.RefObject<HTMLDivElement>;
   isSelected?: boolean;
   lastModified?: string;
@@ -176,8 +173,6 @@ const AddSliceCard: React.FC<{
   thumbnailUrl?: string;
   visType: string;
 }> = ({
-  datasourceUrl,
-  datasourceName = '-',
   innerRef,
   isSelected = false,
   lastModified,
@@ -277,19 +272,6 @@ const AddSliceCard: React.FC<{
               `}
             >
               <MetadataItem label={t('Viz type')} value={vizName} />
-              <MetadataItem
-                label={t('Dataset')}
-                value={
-                  datasourceUrl ? (
-                    <GenericLink to={datasourceUrl}>
-                      {datasourceName}
-                    </GenericLink>
-                  ) : (
-                    datasourceName
-                  )
-                }
-                tooltipText={datasourceName}
-              />
               <MetadataItem label={t('Modified')} value={lastModified} />
             </div>
           </div>

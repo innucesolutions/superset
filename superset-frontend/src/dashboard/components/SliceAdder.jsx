@@ -60,12 +60,14 @@ const propTypes = {
   selectedSliceIds: PropTypes.arrayOf(PropTypes.number),
   editMode: PropTypes.bool,
   dashboardId: PropTypes.number,
+  fsRoleAdmin: PropTypes.bool,
 };
 
 const defaultProps = {
   selectedSliceIds: [],
   editMode: false,
   errorMessage: '',
+  fsRoleAdmin: false,
 };
 
 const KEYS_TO_FILTERS = ['slice_name', 'viz_type', 'datasource_name'];
@@ -78,7 +80,7 @@ const KEYS_TO_SORT = {
 
 export const DEFAULT_SORT_KEY = 'changed_on';
 
-const DEFAULT_CELL_HEIGHT = 128;
+const DEFAULT_CELL_HEIGHT = 105;
 
 const Controls = styled.div`
   ${({ theme }) => `
@@ -147,7 +149,7 @@ class SliceAdder extends React.Component {
       sortBy: DEFAULT_SORT_KEY,
       selectedSliceIdsSet: new Set(props.selectedSliceIds),
       showOnlyMyCharts: getItem(
-        LocalStorageKeys.DashboardEditorShowOnlyMyCharts,
+        LocalStorageKeys.dashboard__editor_show_only_my_charts,
         true,
       ),
     };
@@ -159,7 +161,7 @@ class SliceAdder extends React.Component {
   }
 
   userIdForFetch() {
-    return this.state.showOnlyMyCharts ? this.props.userId : undefined;
+    return undefined;
   }
 
   componentDidMount() {
@@ -198,9 +200,10 @@ class SliceAdder extends React.Component {
   }
 
   getFilteredSortedSlices(slices, searchTerm, sortBy, showOnlyMyCharts) {
+    const doItNot = false;
     return Object.values(slices)
       .filter(slice =>
-        showOnlyMyCharts
+        showOnlyMyCharts && doItNot
           ? (slice.owners &&
               slice.owners.find(owner => owner.id === this.props.userId)) ||
             (slice.created_by && slice.created_by.id === this.props.userId)
@@ -285,8 +288,6 @@ class SliceAdder extends React.Component {
             sliceName={cellData.slice_name}
             lastModified={cellData.changed_on_humanized}
             visType={cellData.viz_type}
-            datasourceUrl={cellData.datasource_url}
-            datasourceName={cellData.datasource_name}
             thumbnailUrl={cellData.thumbnail_url}
             isSelected={isSelected}
           />
@@ -312,7 +313,10 @@ class SliceAdder extends React.Component {
         showOnlyMyCharts,
       ),
     }));
-    setItem(LocalStorageKeys.DashboardEditorShowOnlyMyCharts, showOnlyMyCharts);
+    setItem(
+      LocalStorageKeys.dashboard__editor_show_only_my_charts,
+      showOnlyMyCharts,
+    );
   }
 
   render() {
@@ -324,70 +328,77 @@ class SliceAdder extends React.Component {
           flex-direction: column;
         `}
       >
-        <NewChartButtonContainer>
-          <NewChartButton
-            buttonStyle="link"
-            buttonSize="xsmall"
-            onClick={() =>
-              window.open(
-                `/chart/add?dashboard_id=${this.props.dashboardId}`,
-                '_blank',
-                'noopener noreferrer',
-              )
-            }
-          >
-            <Icons.PlusSmall />
-            {t('Create new chart')}
-          </NewChartButton>
-        </NewChartButtonContainer>
-        <Controls>
-          <Input
-            placeholder={
-              this.state.showOnlyMyCharts
-                ? t('Filter your charts')
-                : t('Filter charts')
-            }
-            className="search-input"
-            onChange={ev => this.handleChange(ev.target.value)}
-            data-test="dashboard-charts-filter-search-input"
-          />
-          <StyledSelect
-            id="slice-adder-sortby"
-            value={this.state.sortBy}
-            onChange={this.handleSelect}
-            options={Object.entries(KEYS_TO_SORT).map(([key, label]) => ({
-              label: t('Sort by %s', label),
-              value: key,
-            }))}
-            placeholder={t('Sort by')}
-          />
-        </Controls>
-        <div
-          css={theme => css`
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
-            align-items: center;
-            gap: ${theme.gridUnit}px;
-            padding: 0 ${theme.gridUnit * 3}px ${theme.gridUnit * 4}px
-              ${theme.gridUnit * 3}px;
-          `}
-        >
-          <Checkbox
-            onChange={this.onShowOnlyMyCharts}
-            checked={this.state.showOnlyMyCharts}
-          />
-          {t('Show only my charts')}
-          <InfoTooltipWithTrigger
-            placement="top"
-            tooltip={t(
-              `You can choose to display all charts that you have access to or only the ones you own.
-              Your filter selection will be saved and remain active until you choose to change it.`,
-            )}
-          />
-        </div>
+        {this.props.fsRoleAdmin && (
+          <div>
+            {/* Create new chart */}
+            <NewChartButtonContainer>
+              <NewChartButton
+                buttonStyle="link"
+                buttonSize="xsmall"
+                onClick={() =>
+                  window.open(
+                    `/chart/add?dashboard_id=${this.props.dashboardId}`,
+                    '_blank',
+                    'noopener noreferrer',
+                  )
+                }
+              >
+                <Icons.PlusSmall />
+                {t('Create new chart')}
+              </NewChartButton>
+            </NewChartButtonContainer>
+            {/* Filter */}
+            <Controls>
+              <Input
+                placeholder={
+                  this.state.showOnlyMyCharts
+                    ? t('Filter your charts')
+                    : t('Filter charts')
+                }
+                className="search-input"
+                onChange={ev => this.handleChange(ev.target.value)}
+                data-test="dashboard-charts-filter-search-input"
+              />
+              <StyledSelect
+                id="slice-adder-sortby"
+                value={this.state.sortBy}
+                onChange={this.handleSelect}
+                options={Object.entries(KEYS_TO_SORT).map(([key, label]) => ({
+                  label: t('Sort by %s', label),
+                  value: key,
+                }))}
+                placeholder={t('Sort by')}
+              />
+            </Controls>
+            {/* Show only my charts */}
+            <div
+              css={theme => css`
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+                gap: ${theme.gridUnit}px;
+                padding: 0 ${theme.gridUnit * 3}px ${theme.gridUnit * 4}px
+                  ${theme.gridUnit * 3}px;
+              `}
+            >
+              <Checkbox
+                onChange={this.onShowOnlyMyCharts}
+                checked={this.state.showOnlyMyCharts}
+              />
+              {t('Show only my charts')}
+              <InfoTooltipWithTrigger
+                placement="top"
+                tooltip={t(
+                  `You can choose to display all charts that you have access to or only the ones you own.
+                Your filter selection will be saved and remain active until you choose to change it.`,
+                )}
+              />
+            </div>
+          </div>
+        )}
         {this.props.isLoading && <Loading />}
-        {!this.props.isLoading && this.state.filteredSlices.length > 0 && (
+        {!this.props.isLoading && this.state.filteredSlices.length > 0 ? (
           <ChartList>
             <AutoSizer>
               {({ height, width }) => (
@@ -405,6 +416,14 @@ class SliceAdder extends React.Component {
               )}
             </AutoSizer>
           </ChartList>
+        ) : (
+          <div
+            css={css`
+              text-align: center;
+            `}
+          >
+            {t('No charts yet')}
+          </div>
         )}
         {this.props.errorMessage && (
           <div

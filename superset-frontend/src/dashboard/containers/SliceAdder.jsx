@@ -35,6 +35,7 @@ function mapStateToProps(
     errorMessage: sliceEntities.errorMessage,
     lastUpdated: sliceEntities.lastUpdated,
     editMode: dashboardState.editMode,
+    canExplore: dashboardInfo.superset_can_explore,
   };
 }
 

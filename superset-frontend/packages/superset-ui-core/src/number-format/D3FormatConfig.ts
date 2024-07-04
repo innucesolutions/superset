@@ -19,8 +19,8 @@
 import { FormatLocaleDefinition } from 'd3-format';
 
 export const DEFAULT_D3_FORMAT: FormatLocaleDefinition = {
-  decimal: '.',
-  thousands: ',',
+  decimal: ',',
+  thousands: '.',
   grouping: [3],
-  currency: ['$', ''],
+  currency: ['€', ''],
 };
