@@ -365,6 +365,7 @@ export const hydrateDashboard =
               metadata.filter_bar_orientation) ||
             FilterBarOrientation.VERTICAL,
           crossFiltersEnabled,
+          fs_role_admin: 'fs_role_admin' in user.roles,
         },
         dataMask,
         dashboardFilters,

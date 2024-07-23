@@ -419,7 +419,7 @@ const SliceHeaderControls = (props: SliceHeaderControlsPropsWithRouter) => {
         </Menu.Item>
       )}
 
-      {canEditCrossFilters && (
+      {canEditCrossFilters && props.supersetCanExplore && (
         <>
           <Menu.Item key={MENU_KEYS.CROSS_FILTER_SCOPING}>
             {t('Cross-filtering scoping')}

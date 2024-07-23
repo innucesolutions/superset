@@ -92,7 +92,8 @@ function mapStateToProps(
     formData,
     editMode: dashboardState.editMode,
     isExpanded: !!dashboardState.expandedSlices[id],
-    supersetCanExplore: !!dashboardInfo.superset_can_explore,
+    supersetCanExplore:
+      !!dashboardInfo.superset_can_explore && dashboardInfo.fs_role_admin,
     supersetCanShare: !!dashboardInfo.superset_can_share,
     supersetCanCSV: !!dashboardInfo.superset_can_csv,
     ownState: dataMask[id]?.ownState,

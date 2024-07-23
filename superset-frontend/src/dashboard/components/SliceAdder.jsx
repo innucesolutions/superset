@@ -60,14 +60,14 @@ const propTypes = {
   selectedSliceIds: PropTypes.arrayOf(PropTypes.number),
   editMode: PropTypes.bool,
   dashboardId: PropTypes.number,
-  canExplore: PropTypes.bool,
+  fsRoleAdmin: PropTypes.bool,
 };
 
 const defaultProps = {
   selectedSliceIds: [],
   editMode: false,
   errorMessage: '',
-  canExplore: true,
+  fsRoleAdmin: false,
 };
 
 const KEYS_TO_FILTERS = ['slice_name', 'viz_type', 'datasource_name'];
@@ -328,7 +328,7 @@ class SliceAdder extends React.Component {
           flex-direction: column;
         `}
       >
-        {this.props.canExplore && (
+        {this.props.fsRoleAdmin && (
           <div>
             {/* Create new chart */}
             <NewChartButtonContainer>
