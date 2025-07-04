@@ -45,6 +45,11 @@ def df_to_excel(df: pd.DataFrame, **kwargs: Any) -> Any:
 
     # make sure formulas are quoted, to prevent malicious injections
     df = quote_formulas(df)
+   # extract <a> tags
+
+
+    for column in df.select_dtypes(include=["object"]).columns:
+        df[column] = df[column].astype(str).str.replace(r'<a[^>]*>([^<]*)</>', r'\1', regex=True)
 
     # pylint: disable=abstract-class-instantiated
     with pd.ExcelWriter(output, engine="xlsxwriter") as writer:

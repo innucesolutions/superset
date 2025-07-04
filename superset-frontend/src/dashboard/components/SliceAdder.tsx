@@ -26,8 +26,6 @@ import { t, styled, css } from '@superset-ui/core';
 import { Input } from 'src/components/Input';
 import { Select } from 'src/components';
 import Loading from 'src/components/Loading';
-import Button from 'src/components/Button';
-import Icons from 'src/components/Icons';
 import {
   LocalStorageKeys,
   getItem,
@@ -42,8 +40,6 @@ import {
   NEW_COMPONENTS_SOURCE_ID,
 } from 'src/dashboard/util/constants';
 import { debounce, pickBy } from 'lodash';
-import Checkbox from 'src/components/Checkbox';
-import { InfoTooltipWithTrigger } from '@superset-ui/chart-controls';
 import { Dispatch } from 'redux';
 import { Slice } from 'src/dashboard/types';
 import AddSliceCard from './AddSliceCard';
@@ -104,28 +100,6 @@ const Controls = styled.div`
 const StyledSelect = styled(Select)<{ id?: string }>`
   margin-left: ${({ theme }) => theme.gridUnit * 2}px;
   min-width: 150px;
-`;
-
-const NewChartButtonContainer = styled.div`
-  ${({ theme }) => css`
-    display: flex;
-    justify-content: flex-end;
-    padding-right: ${theme.gridUnit * 2}px;
-  `}
-`;
-
-const NewChartButton = styled(Button)`
-  ${({ theme }) => css`
-    height: auto;
-    & > .anticon + span {
-      margin-left: 0;
-    }
-    & > [role='img']:first-of-type {
-      margin-right: ${theme.gridUnit}px;
-      padding-bottom: 1px;
-      line-height: 0;
-    }
-  `}
 `;
 
 export const ChartList = styled.div`
@@ -354,22 +328,6 @@ class SliceAdder extends Component<SliceAdderProps, SliceAdderState> {
           flex-direction: column;
         `}
       >
-        <NewChartButtonContainer>
-          <NewChartButton
-            buttonStyle="link"
-            buttonSize="xsmall"
-            onClick={() =>
-              window.open(
-                `/chart/add?dashboard_id=${this.props.dashboardId}`,
-                '_blank',
-                'noopener noreferrer',
-              )
-            }
-          >
-            <Icons.PlusSmall />
-            {t('Create new chart')}
-          </NewChartButton>
-        </NewChartButtonContainer>
         <Controls>
           <Input
             placeholder={
@@ -392,30 +350,6 @@ class SliceAdder extends Component<SliceAdderProps, SliceAdderState> {
             placeholder={t('Sort by')}
           />
         </Controls>
-        <div
-          css={theme => css`
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
-            align-items: center;
-            gap: ${theme.gridUnit}px;
-            padding: 0 ${theme.gridUnit * 3}px ${theme.gridUnit * 4}px
-              ${theme.gridUnit * 3}px;
-          `}
-        >
-          <Checkbox
-            onChange={this.onShowOnlyMyCharts}
-            checked={this.state.showOnlyMyCharts}
-          />
-          {t('Show only my charts')}
-          <InfoTooltipWithTrigger
-            placement="top"
-            tooltip={t(
-              `You can choose to display all charts that you have access to or only the ones you own.
-              Your filter selection will be saved and remain active until you choose to change it.`,
-            )}
-          />
-        </div>
         {this.props.isLoading && <Loading />}
         {!this.props.isLoading && this.state.filteredSlices.length > 0 && (
           <ChartList>

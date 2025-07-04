@@ -53,6 +53,11 @@ function formatValue(
   if (typeof value === 'string') {
     return isProbablyHTML(value) ? [true, sanitizeHtml(value)] : [false, value];
   }
+
+  if (typeof value === 'number') {
+    // kein adaptives Formatting per default in Tabellenzelle
+    return [false, value.toLocaleString('de-DE')];
+  }
   return [false, value.toString()];
 }
 

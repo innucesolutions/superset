@@ -17,14 +17,21 @@
  * under the License.
  */
 
-import { format as d3Format } from 'd3-format';
+import { formatDefaultLocale } from 'd3-format';
 import NumberFormatter from '../NumberFormatter';
 import NumberFormats from '../NumberFormats';
 
-const siFormatter = d3Format(`.3~s`);
-const float2PointFormatter = d3Format(`.2~f`);
-const float4PointFormatter = d3Format(`.4~f`);
+const deFormatter = formatDefaultLocale({
+  decimal: ',',
+  thousands: '.',
+  grouping: [3],
+  currency: ['€', ''],
+});
 
+const siFormatter = deFormatter.format(`.3~s`);
+
+const float2PointFormatter = deFormatter.format(`.2~f`);
+const float4PointFormatter = deFormatter.format(`.4~f`);
 function formatValue(value: number) {
   if (value === 0) {
     return '0';
