@@ -29,7 +29,7 @@ do
   if [ $extension == "po" ]
   then
     echo "po2json --domain superset --format jed1.x $file $filename.json"
-    po2json --domain superset --format jed1.x $file $filename.json
-    prettier --write $filename.json
+    node_modules/.bin/po2json --domain superset --format jed1.x $file $filename.json
+    node_modules/.bin/prettier --write $filename.json
   fi
 done
