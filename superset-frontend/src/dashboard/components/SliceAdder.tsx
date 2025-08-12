@@ -153,7 +153,8 @@ class SliceAdder extends Component<SliceAdderProps, SliceAdderState> {
   }
 
   userIdForFetch() {
-    return this.state.showOnlyMyCharts ? this.props.userId : undefined;
+    // all permitted charts
+    return undefined;
   }
 
   componentDidMount() {
