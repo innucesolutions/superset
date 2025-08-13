@@ -142,7 +142,7 @@ class SliceAdder extends Component<SliceAdderProps, SliceAdderState> {
       selectedSliceIdsSet: new Set(props.selectedSliceIds),
       showOnlyMyCharts: getItem(
         LocalStorageKeys.DashboardEditorShowOnlyMyCharts,
-        true,
+        false,
       ),
     };
     this.rowRenderer = this.rowRenderer.bind(this);
